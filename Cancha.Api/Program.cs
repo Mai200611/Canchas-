@@ -14,6 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
+
+
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (builder.Environment.IsDevelopment())
 {
