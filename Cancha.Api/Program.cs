@@ -6,6 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
+
+
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (builder.Environment.IsDevelopment())
 {
