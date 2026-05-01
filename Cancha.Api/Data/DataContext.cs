@@ -26,6 +26,7 @@ namespace Cancha.Api.Data
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(c => c.Cedula).IsUnique();
+                entity.HasIndex(e => e.Correo).IsUnique();
             });
 
             modelBuilder.Entity<CanchaEntidad>(entity =>
