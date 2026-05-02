@@ -68,5 +68,17 @@ namespace Cancha.Api.Controller
         {
             return _context.HorariosDisponibles.Any(e => e.Id == id);
         }
+        [HttpDelete("{id:int}")] // Eliminar un horario disponible por id
+        public async Task<IActionResult> DeleteHorarioDisponible(int id)
+        {
+            var horarioDisponible = await _context.HorariosDisponibles.FindAsync(id);
+            if (horarioDisponible == null)
+            {
+                return NotFound("El Horario Disponible no fue encontrado");
+            }
+            _context.HorariosDisponibles.Remove(horarioDisponible);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
