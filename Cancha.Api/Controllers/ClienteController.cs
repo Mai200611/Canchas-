@@ -68,5 +68,17 @@ namespace Cancha.Api.Controllers
         {
             return _context.Clientes.Any(e => e.Id == id);
         }
+        [HttpDelete("{id:int}")] // Eliminar un cliente existente
+        public async Task<IActionResult> DeleteCliente(int id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
+            {
+                return NotFound("El Cliente no fue encontrado");
+            }
+            _context.Clientes.Remove(cliente);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
