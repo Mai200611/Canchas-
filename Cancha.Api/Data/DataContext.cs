@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Cancha.Shared.Entities;
-using CanchaEntidad = Cancha.Shared.Entities.Cancha; //Por conflicto con nombramiento
 
 namespace Cancha.Api.Data
 {
