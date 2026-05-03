@@ -22,12 +22,12 @@
                 <label for="tipo" class="form-label fw-bold">Tipo de Cancha</label>
                 <InputSelect id="tipo" class="form-select" @bind-Value="nuevaCancha.Tipo">
                     <option value="0">Seleccione un tipo...</option>
-                    <option value="@TipoCancha.Futbol">Fútbol</option>
-                    <option value="@TipoCancha.FutbolSala">Fútbol Sala</option>
-                    <option value="@TipoCancha.Tennis">Tenis</option>
-                    <option value="@TipoCancha.Baloncesto">Baloncesto</option>
-                    <option value="@TipoCancha.Voleibol">Voleibol</option>
-                    <option value="@TipoCancha.Pádel">Pádel</option>
+                    <option value="1">Fútbol</option>
+                    <option value="2">Fútbol Sala</option>
+                    <option value="3">Tenis</option>
+                    <option value="4">Baloncesto</option>
+                    <option value="5">Voleibol</option>
+                    <option value="6">Pádel</option>
                 </InputSelect>
                 <ValidationMessage For="@(() => nuevaCancha.Tipo)" class="text-danger small" />
             </div>
