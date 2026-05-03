@@ -1,0 +1,36 @@
+﻿@page "/HorarioDisponible/nueva"
+@using Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3 class="mb-4">Registrar Nuevo Horario Disponible</h3>
+     <EditForm Model="nuevoHorarioDisponible" OnValidSubmit="GuardarHorarioDisponible">
+        <DataAnnotationsValidator />
+
+        <div class="col-md-6 mb-3">
+                <label for="dia" class="form-label fw-bold">Dia De la Semana</label>
+                <InputSelect id="dia" class="form-select" @bind-Value="nuevoHorarioDisponible.DiaSemana">
+				<option value="">Seleccione un Dia...</option>
+				<option value="@DiaSemana.Lunes">Lunes</option>
+				<option value="@DiaSemana.Martes">Martes</option>
+				<option value="@DiaSemana.Miercoles">Miércoles</option>
+				<option value="@DiaSemana.Jueves">Jueves</option>
+				<option value="@DiaSemana.Viernes">Viernes</option>
+				<option value="@DiaSemana.Sabado">Sábado</option>
+				<option value="@DiaSemana.Domingo">Domingo</option>
+                    </InputSelect>
+        </div>
+     </EditForm>
+        
+</div>
+@code {
+    private HorarioDisponible nuevoHorarioDisponible = new HorarioDisponible
+    {
+
+    };
+
+    private void GuardarHorarioDisponible()
+    {
+        Console.WriteLine($"");
+    }
+}
