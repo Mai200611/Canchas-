@@ -1,0 +1,55 @@
+﻿@page "/cliente/nueva"
+@using Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3 class="mb-4">Registrar Nueva Cliente</h3>
+
+    <EditForm Model="nuevoCliente" OnValidSubmit="GuardarCliente">
+        <DataAnnotationsValidator />
+        <div class="row">
+            @* CAMPO: Nombre *@
+            <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label fw-bold">Nombre del Cliente</label>
+                <InputText id="nombre" class="form-control" @bind-value="nuevoCliente.Nombre" placeholder="Ej: Juan Pérez" />
+                @* Validacion *@
+                <ValidationMessage For="@(() => nuevoCliente.Nombre)" class="text-danger small" />
+            </div>
+
+            @* CAMPO: Cedula *@
+            <div class="col-md-6 mb-3">
+                <label for="cedula" class="form-label fw-bold">Cédula del Cliente</label>
+                <InputText id="cedula" class="form-control" @bind-value="nuevoCliente.Cedula" placeholder="Ej: 1234567890" />
+                @* Validacion *@
+				<ValidationMessage For="@(() => nuevoCliente.Cedula)" class="text-danger small" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="Correo" class="form-label fw-bold">Correo</label>
+                <InputText id="correoElectronico" class="form-control" @bind-value="nuevoCliente.Correo" placeholder="Ej: correo@ejemplo.com" />
+                @* Validacion *@
+                <ValidationMessage For="@(() => nuevoCliente.Correo)" class="text-danger small" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label fw-bold">Teléfono</label>
+                <InputText id="telefono" class="form-control" @bind-value="nuevoCliente.Telefono" placeholder="Ej: 0987654321" />
+                @* Validacion *@
+                <ValidationMessage For="@(() => nuevoCliente.Telefono)" class="text-danger small" />
+            </div>  
+
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private Cliente nuevoCliente = new Cliente
+    {
+        
+    };
+
+    private void GuardarCliente()
+    {
+        Console.WriteLine($"Cliente de Nombre: {nuevoCliente.Nombre} Y Cedula  Fue Guardado con Exito");
+    }
+}
