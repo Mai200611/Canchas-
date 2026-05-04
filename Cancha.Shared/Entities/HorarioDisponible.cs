@@ -61,7 +61,7 @@ namespace Cancha.Shared.Entities
         //Relaciones
 
         [JsonIgnore]
-        public Cancha? Cancha { get; set; }
+        public CanchaEntidad? Cancha { get; set; }
 
         [Display(Name = "Cancha")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

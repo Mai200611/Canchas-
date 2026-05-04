@@ -17,7 +17,7 @@ namespace Cancha.Shared.Entities
         Pádel = 6
     }
 
-    public class Cancha
+    public class CanchaEntidad
     {
         [Display(Name = "Id de la Cancha")]
         public int Id { get; set; }

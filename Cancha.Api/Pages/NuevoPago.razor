@@ -1,0 +1,50 @@
+﻿@page "/HorarioDisponible/nueva"
+@using Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+	<h3 class="mb-4">Registrar Nuevo Pago</h3>
+	 <EditForm Model="nuevoPago" OnValidSubmit="GuardarPago">
+		<DataAnnotationsValidator />
+
+        <div class="col-md-6 mb-3"> 
+            <label for="MetodoPago" class="form-label fw-bold">Metodo de Pago</label>
+             <InputSelect id="MetodoPago" class="form-select" @bind-Value="nuevoPago.MetodoPago">
+				<option value="">Seleccione un Metodo...</option>
+				<option value="1">Efectivo</option>
+                <option value="2">Transferencia</option>
+				<option value="3">Tarjeta</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => nuevoPago.MetodoPago)" class="text-danger small" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="reservaId" class="form-label fw-bold">ID de la Reserva</label>
+             <InputNumber id="reservaId" class="form-control" @bind-Value="nuevoPago.ReservaId" />
+			<ValidationMessage For="@(() => nuevoPago.ReservaId)" class="text-danger small" />
+
+        </div>
+
+		<div class="col-md-6 mb-3">
+            <label for="Monto" class="form-label fw-bold">Monto</label>
+             <InputNumber id="Monto" class="form-control" @bind-Value="nuevoPago.Monto" />
+                <ValidationMessage For="@(() => nuevoPago.Monto)" class="text-danger small" />
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar Pago</button>
+		</div>
+        @* Faltan Agregar Formulario de Fecha *@
+
+	</EditForm>		
+</div>
+@code {
+    private Pago nuevoPago = new Pago
+    {
+
+    };
+
+    private void GuardarPago()
+    {
+        Console.WriteLine($"");
+    }
+}

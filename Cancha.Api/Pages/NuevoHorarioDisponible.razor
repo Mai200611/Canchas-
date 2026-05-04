@@ -1,0 +1,68 @@
+﻿@page "/HorarioDisponible/nueva"
+@using Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3 class="mb-4">Registrar Nuevo Horario Disponible</h3>
+     <EditForm Model="nuevoHorarioDisponible" OnValidSubmit="GuardarHorarioDisponible">
+        <DataAnnotationsValidator />
+
+        <div class="col-md-6 mb-3">
+            <label for="canchaId" class="form-label fw-bold">ID de la Cancha</label>
+            <InputNumber id="canchaId" class="form-control" @bind-Value="nuevoHorarioDisponible.CanchaId" />
+            <ValidationMessage For="@(() => nuevoHorarioDisponible.CanchaId)" class="text-danger small" />
+        </div>
+          
+        <div class="col-md-6 mb-3">
+                <label for="dia" class="form-label fw-bold">Dia De la Semana</label>
+                <InputSelect id="dia" class="form-select" @bind-Value="nuevoHorarioDisponible.DiaSemana">
+				<option value="">Seleccione un Dia...</option>
+				<option value="1">Lunes</option>
+				<option value="2">Martes</option>
+				<option value="3">Miércoles</option>
+				<option value="4">Jueves</option>
+				<option value="5">Viernes</option>
+				<option value="6">Sábado</option>
+				<option value="0">Domingo</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => nuevoHorarioDisponible.DiaSemana)" class="text-danger small" />
+        </div>
+
+      
+        <div class="col-md-6 mb-3">
+            <label for="horaInicio" class="form-label fw-bold">Hora de Inicio</label>
+            <input type="time" id="horaInicio" class="form-control" @bind="nuevoHorarioDisponible.HoraInicio" />
+            <ValidationMessage For="@(() => nuevoHorarioDisponible.HoraInicio)" class="text-danger small" />
+        </div>
+
+       
+        <div class="col-md-6 mb-3">
+            <label for="horaFin" class="form-label fw-bold">Hora de Fin</label>
+            <input type="time" id="horaFin" class="form-control" @bind="nuevoHorarioDisponible.HoraFin" />
+            <ValidationMessage For="@(() => nuevoHorarioDisponible.HoraFin)" class="text-danger small" />
+        </div>
+
+        <div class="form-check form-switch mb-3">
+			<InputCheckbox id="activo" class="form-check-input" @bind-Value="nuevoHorarioDisponible.Activo" />
+            <label for="activo" class="form-check-label fw-bold">Horario Activo</label>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar Horario</button>
+        </div>
+
+     </EditForm>
+
+        
+</div>
+@code {
+    private HorarioDisponible nuevoHorarioDisponible = new HorarioDisponible
+    {
+
+    };
+
+    private void GuardarHorarioDisponible()
+    {
+        Console.WriteLine($"");
+    }
+}
