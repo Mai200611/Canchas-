@@ -19,6 +19,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+// Este es el registro del SeedDb
+builder.Services.AddTransient<SeedDb>();
+
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
