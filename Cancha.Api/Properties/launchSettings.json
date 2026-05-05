@@ -16,7 +16,11 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
+<<<<<<< HEAD
       "applicationUrl": "https://localhost:7246;http://localhost:5089",
+=======
+      "applicationUrl": "https://localhost:7000;http://localhost:5072",
+>>>>>>> 6c401b0 (Arregla puerto de salida y URI en proyecto WEB)
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
