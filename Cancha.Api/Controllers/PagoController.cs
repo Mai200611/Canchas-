@@ -68,5 +68,18 @@ namespace Cancha.Api.Controller
         {
             return _context.Pagos.Any(e => e.Id == id);
         }
+
+        [HttpDelete("{id:int}")] // Eliminar un pago por id
+        public async Task<IActionResult> DeletePago(int id)
+        {
+            var pago = await _context.Pagos.FindAsync(id);
+            if (pago == null)
+            {
+                return NotFound("El Pago no fue encontrado");
+            }
+            _context.Pagos.Remove(pago);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

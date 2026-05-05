@@ -1,0 +1,13 @@
+﻿namespace Cancha.Web.Repositories
+{
+    public interface IRepository
+    {
+        Task<HttpResponseWrapper<T>> GetAsync<T>(string url);
+
+        //Temp
+        //Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model);
+
+        Task<HttpResponseWrapper<TResponse>> PostAsync<T, TResponse>(string url, T model);
+    }
+
+}

@@ -1,4 +1,4 @@
-﻿@page "/HorarioDisponible/nueva"
+﻿@page "/Pago/nueva"
 @using Cancha.Shared.Entities
 @using Microsoft.AspNetCore.Components.Forms
 <div class="container mt-4 shadow-sm p-4 bg-white rounded">
@@ -30,10 +30,15 @@
                 <ValidationMessage For="@(() => nuevoPago.Monto)" class="text-danger small" />
         </div>
 
+        <div class="col-md-6 mb-3">
+            <label for="FechaPago" class="form-label fw-bold">Fecha de Pago</label>
+             <InputDate id="FechaPago" class="form-control" @bind-Value="nuevoPago.FechaPago" />
+		<ValidationMessage For="@(() => nuevoPago.FechaPago)" class="text-danger small" />
+		</div>
+
         <div class="text-end">
             <button type="submit" class="btn btn-primary">Guardar Pago</button>
 		</div>
-        @* Faltan Agregar Formulario de Fecha *@
 
 	</EditForm>		
 </div>
