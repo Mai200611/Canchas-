@@ -1,0 +1,38 @@
+﻿@page "/Reserva/nueva"
+@using Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+	<h3 class="mb-4">Registrar Nuevo Reserva</h3>
+     <EditForm Model="nuevaReserva" OnValidSubmit="GuardarReserva">
+		<DataAnnotationsValidator />
+        <div class="col-md-6 mb-3"> 
+            <label for="CanchaId" class="form-label fw-bold">ID de la Cancha</label>
+			<InputNumber id="CanchaId" class="form-control" @bind-Value="nuevaReserva.CanchaId" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="EstadoReserva" class="form-label fw-bold">Estado de la Reserva</label>
+            <InputSelect id="EstadoReserva" class="form-select" @bind-Value="nuevaReserva.EstadoReserva">
+                <option value="">Seleccione un Estado...</option>
+                <option value="1">Pendiente</option>
+                <option value="2">Confirmada</option>
+                <option value="3">Cancelada</option>
+            </InputSelect>
+            <ValidationMessage For="@(() => nuevaReserva.EstadoReserva)" class="text-danger small" />
+        </div>
+</div>
+
+        </EditForm>
+
+
+
+@code {
+    private Reserva nuevaReserva = new Reserva
+    {
+
+    };
+
+    private void GuardarReserva()
+    {
+        Console.WriteLine($"");
+    }
+}
