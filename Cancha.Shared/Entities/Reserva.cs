@@ -30,7 +30,7 @@ namespace Cancha.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [DataType(DataType.Date)]
         [CustomValidation(typeof(Reserva), nameof(ValidarFechaNoMenorActual))]
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; } = DateTime.Today;
 
         [Display(Name = "Hora de Inicio")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -47,10 +47,8 @@ namespace Cancha.Shared.Entities
 
         [Display(Name = "Estado de la Reserva")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [MaxLength(20, ErrorMessage = "El campo {0} no puede exceder los {1} caracteres.")]
         [EnumDataType(typeof(EstadoReserva), ErrorMessage = "El campo {0} no es válido.")]
-        [Column(TypeName = "varchar(20)")]
-        public string Estado { get; set; } = EstadoReserva.Pendiente.ToString();
+        public EstadoReserva Estado { get; set; } = EstadoReserva.Pendiente;
 
         [Display(Name = "Precio Total")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

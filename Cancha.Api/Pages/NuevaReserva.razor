@@ -1,56 +1,57 @@
 ﻿@page "/Reserva/nueva"
 @using Cancha.Shared.Entities
 @using Microsoft.AspNetCore.Components.Forms
+
 <div class="container mt-4 shadow-sm p-4 bg-white rounded">
-	<h3 class="mb-4">Registrar Nuevo Reserva</h3>
-     <EditForm Model="nuevaReserva" OnValidSubmit="GuardarReserva">
-		<DataAnnotationsValidator />
-        <div class="col-md-6 mb-3"> 
+    <h3 class="mb-4">Registrar Nuevo Reserva</h3>
+    <EditForm Model="nuevaReserva" OnValidSubmit="GuardarReserva">
+        <DataAnnotationsValidator />
+
+        <div class="col-md-6 mb-3">
             <label for="CanchaId" class="form-label fw-bold">ID de la Cancha</label>
-			<InputNumber id="CanchaId" class="form-control" @bind-Value="nuevaReserva.CanchaId" />
+            <InputNumber id="CanchaId" class="form-control" @bind-Value="nuevaReserva.CanchaId" />
+            <ValidationMessage For="@(() => nuevaReserva.CanchaId)" class="text-danger small" />
         </div>
-             <div class="col-md-6 mb-3">
-                  <label for="EstadoReserva" class="form-label fw-bold">Estado de la Reserva</label>
-                <InputSelect id="EstadoReserva" class="form-select" @bind-Value="nuevaReserva.Estado">
-                      <option value="1">Pendiente</option>
-                      <option value="2">Confirmada</option>
-                      <option value="3">Completada</option>
-                      <option value="4">Cancelada</option>
-                </InputSelect>
-             <ValidationMessage For="@(() => nuevaReserva.Estado)" class="text-danger small" />
-            </div>
 
-             <div class="col-md-6 mb-3">
-			    <label for="FechaReserva" class="form-label fw-bold">Fecha de la Reserva</label>
-			    <InputDate id="FechaReserva" class="form-control" @bind-Value="nuevaReserva.Fecha" />
-		   	    <ValidationMessage For="@(() => nuevaReserva.Fecha)" class="text-danger small" />
-		    </div>
-    
-             <div class="col-md-6 mb-3">
-			    <label for="HoraIni" class="form-label fw-bold">Hora Inicio de la Reserva</label>
-		    	<input type="time" class="form-control" @bind="horaInicioString" />
-		    	<ValidationMessage For="@(() => nuevaReserva.HoraInicio)" class="text-danger small" />
-             </div>
+        <div class="col-md-6 mb-3">
+            <label for="EstadoReserva" class="form-label fw-bold">Estado de la Reserva</label>
+            <InputSelect id="EstadoReserva" class="form-select" @bind-Value="nuevaReserva.Estado">
+                <option value="1">Pendiente</option>
+                <option value="2">Confirmada</option>
+                <option value="3">Completada</option>
+                <option value="4">Cancelada</option>
+            </InputSelect>
+            <ValidationMessage For="@(() => nuevaReserva.Estado)" class="text-danger small" />
+        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="HoraFin" class="form-label fw-bold">Hora Fin de La Reserva</label>
-                <input type="time" class="form-control" @bind="horaFinString" />
-                <ValidationMessage For="@(() => nuevaReserva.HoraFin)" class="text-danger small" />
-            </div>
+        <div class="col-md-6 mb-3">
+            <label for="FechaReserva" class="form-label fw-bold">Fecha de la Reserva</label>
+            <InputDate id="FechaReserva" class="form-control" @bind-Value="nuevaReserva.Fecha" />
+            <ValidationMessage For="@(() => nuevaReserva.Fecha)" class="text-danger small" />
+        </div>
 
-            <div class=""col-md-6 mb-3">
-			<label for="Precio" class="form-label fw-bold">Precio</label>
-			<InputNumber id="Precio" class="form-control" @bind-Value="nuevaReserva.PrecioTotal" />
-			<ValidationMessage For="@(() => nuevaReserva.PrecioTotal)" class="text-danger small" />
-            </div>
+        <div class="col-md-6 mb-3">
+            <label for="HoraIni" class="form-label fw-bold">Hora Inicio de la Reserva</label>
+            <input type="time" class="form-control" @bind="horaInicioString" />
+            <ValidationMessage For="@(() => nuevaReserva.HoraInicio)" class="text-danger small" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="HoraFin" class="form-label fw-bold">Hora Fin de La Reserva</label>
+            <input type="time" class="form-control" @bind="horaFinString" />
+            <ValidationMessage For="@(() => nuevaReserva.HoraFin)" class="text-danger small" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="Precio" class="form-label fw-bold">Precio</label>
+            <InputNumber id="Precio" class="form-control" @bind-Value="nuevaReserva.PrecioTotal" />
+            <ValidationMessage For="@(() => nuevaReserva.PrecioTotal)" class="text-danger small" />
+        </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
-	</EditForm>
+        <a href="/Reserva" class="btn btn-secondary ms-2">Cancelar</a>
+    </EditForm>
 </div>
-
-   
-
-
 
 @code {
     private Reserva nuevaReserva = new Reserva
@@ -66,7 +67,7 @@
     {
         get => nuevaReserva.HoraFin.ToString(@"hh\:mm");
         set => nuevaReserva.HoraFin = TimeSpan.Parse(value);
-	}
+    }
 
     private async Task GuardarReserva()
     {
