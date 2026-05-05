@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Cancha.Api/Cancha.Api.csproj" />
+  <Project Path="Cancha.Api/Cancha.Api.csproj" Id="69e74364-008b-4759-8740-9ee794175277" />
   <Project Path="Cancha.Shared/Cancha.Shared.csproj" />
   <Project Path="Cancha.Web/Cancha.Web.csproj" />
 </Solution>
