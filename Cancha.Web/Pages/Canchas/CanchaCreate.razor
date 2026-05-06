@@ -6,40 +6,6 @@
 @inject NavigationManager NavigationManager
 @inject SweetAlertService sweetAlertService
 
-<div class="container mt-4 shadow-sm p-4 bg-white rounded">
-    <h3 class="mb-4">Registrar Nueva Cancha</h3>
-
-    <EditForm Model="cancha" OnValidSubmit="Create">
-        <DataAnnotationsValidator />
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="nombre" class="form-label fw-bold">Nombre de la Cancha</label>
-                <InputText id="nombre" class="form-control" @bind-Value="cancha.Nombre" placeholder="Ej: Cancha Central" />
-                <ValidationMessage For="@(() => cancha.Nombre)" class="text-danger small" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="tipo" class="form-label fw-bold">Tipo de Cancha</label>
-                <InputSelect id="tipo" class="form-select" @bind-Value="cancha.Tipo">
-                    <option value="0">Seleccione un tipo...</option>
-                    <option value="1">Fútbol</option>
-                    <option value="2">Fútbol Sala</option>
-                    <option value="3">Tenis</option>
-                    <option value="4">Baloncesto</option>
-                    <option value="5">Voleibol</option>
-                    <option value="6">Pádel</option>
-                </InputSelect>
-                <ValidationMessage For="@(() => cancha.Tipo)" class="text-danger small" />
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-end gap-2 border-top pt-3">
-            <button type="button" class="btn btn-secondary" @onclick="Return">Cancelar</button>
-            <button type="submit" class="btn btn-success">Guardar Cancha</button>
-        </div>
-    </EditForm>
-</div>
 
 @code {
     private CanchaEntidad cancha = new CanchaEntidad { Activa = true };

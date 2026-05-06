@@ -10,6 +10,8 @@
         Task<HttpResponseWrapper<TResponse>> PostAsync<T, TResponse>(string url, T model);
         Task<HttpResponseWrapper<TResponse>> DeleteAsync<T, TResponse>(string url);
 
+        Task<HttpResponseWrapper<TResponse>> PutAsync<T, TResponse>(string url, T model);
+
 
     }
 }
