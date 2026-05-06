@@ -1,0 +1,131 @@
+﻿@page "/canchas"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+
+@inject IRepository CanchaRepository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Listado de Canchas</h3>
+        <a href="/canchas/create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Cancha
+        </a>
+    </div>
+
+    @if (canchas is null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else if (canchas.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">
+            No hay canchas registradas en el sistema.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cancha in canchas)
+                {
+                    <tr>
+                        <td class="align-middle">@cancha.Nombre</td>
+                        <td class="align-middle">@cancha.Tipo</td>
+                        <td class="align-middle">
+                            @if (cancha.Activa)
+                            {
+                                <span class="badge bg-success">Activa</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactiva</span>
+                            }
+                        </td>
+                        <td>
+                            @* El botón de editar envía el ID en la URL *@
+                            <a href="/canchas/edit/@cancha.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <button class="btn btn-danger btn-sm" @onclick="() => BorrarCancha(cancha)">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    // Iniciamos la variable como nula para que muestre el estado de "Cargando"
+    private List<Cancha>? canchas;
+
+    // Este método es mágico en Blazor: Se ejecuta automáticamente al entrar a la página
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarCanchas();
+    }
+
+    private async Task CargarCanchas()
+    {
+        // Le pedimos a la API que nos traiga la lista de canchas
+        var responseHttp = await CanchaRepository.GetAsync<List<Cancha>>("/api/canchas");
+
+        if (!responseHttp.Error)
+        {
+            // Si no hay error, guardamos la respuesta en nuestra variable
+            canchas = responseHttp.Response;
+        }
+        else
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task BorrarCancha(Cancha cancha)
+    {
+        // 1. Preguntamos con SweetAlert si está seguro
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+        {
+            Title = "¿Estás seguro?",
+            Text = $"Se eliminará la cancha: {cancha.Nombre}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sí, eliminar",
+            CancelButtonText = "Cancelar"
+        });
+
+        // 2. Si el usuario confirma, llamamos al repositorio para borrar
+        if (string.IsNullOrEmpty(result.Value))
+        {
+            return;
+        }
+
+        var responseHttp = await CanchaRepository.DeleteAsync($"/api/canchas/{cancha.Id}");
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await sweetAlertService.FireAsync("¡Eliminado!", "La cancha ha sido borrada.", SweetAlertIcon.Success);
+
+        // 3. Volvemos a cargar la lista para que desaparezca visualmente
+        await CargarCanchas();
+    }
+}
