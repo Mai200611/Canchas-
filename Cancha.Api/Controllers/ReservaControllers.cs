@@ -68,5 +68,18 @@ namespace Cancha.Api.Controller
         {
             return _context.Reservas.Any(e => e.Id == id);
         }
+
+        [HttpDelete("{id:int}")] // Eliminar una reserva por id
+        public async Task<IActionResult> DeleteReserva(int id)
+        {
+            var reserva = await _context.Reservas.FindAsync(id);
+            if (reserva == null)
+            {
+                return NotFound("La Reserva no fue encontrado");
+            }
+            _context.Reservas.Remove(reserva);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
