@@ -37,6 +37,9 @@ namespace Cancha.Api.Data
                     "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')"
                 ));
                 entity.Property(c => c.Activa).HasDefaultValue(true); //Valor por defecto en la base de datos
+                entity.Property(c => c.Tipo)
+                    .HasConversion<int>()
+                    .HasDefaultValue(TipoCancha.Futbol);
             });
 
             modelBuilder.Entity<HorarioDisponible>(entity =>

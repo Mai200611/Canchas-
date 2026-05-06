@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cancha.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class entidadesCompleta : Migration
+    public partial class MigracionActualizada : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace Cancha.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Tipo = table.Column<int>(type: "int", nullable: false),
+                    Tipo = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     PrecioHora = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     Activa = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
                 },
@@ -128,6 +128,12 @@ namespace Cancha.Api.Migrations
                 name: "IX_Clientes_Cedula",
                 table: "Clientes",
                 column: "Cedula",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_Correo",
+                table: "Clientes",
+                column: "Correo",
                 unique: true);
 
             migrationBuilder.CreateIndex(
