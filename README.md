@@ -46,7 +46,7 @@ El API REST expone las siguientes operaciones CRUD probadas en Swagger:
 ## 🎥 7. Video Demostrativo
 De acuerdo con el punto 8 de la práctica, aquí se encuentra la evidencia del funcionamiento medio YouTube:
 * Yeferxon Alejandro Marquez Video enlace: https://youtu.be/5Bs6gvFnnCQ?si=O86oBcUh0B6ZsxSM
-*
+* Miguel Ángel Peña García Video enlace: https://youtu.be/4Seg_HAzSYU
 *
 *
 
