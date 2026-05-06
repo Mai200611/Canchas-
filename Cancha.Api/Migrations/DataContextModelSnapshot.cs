@@ -22,7 +22,7 @@ namespace Cancha.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,16 +44,11 @@ namespace Cancha.Api.Migrations
                         .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("Tipo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Canchas", t =>
-                        {
-                            t.HasCheckConstraint("CK_Cancha_Tipo", "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')");
-                        });
+                    b.ToTable("Canchas");
                 });
 
             modelBuilder.Entity("Cancha.Shared.Entities.Cliente", b =>
@@ -87,9 +82,6 @@ namespace Cancha.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Cedula")
-                        .IsUnique();
-
-                    b.HasIndex("Correo")
                         .IsUnique();
 
                     b.ToTable("Clientes");
@@ -214,7 +206,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.HorarioDisponible", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
                         .WithMany()
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -236,7 +228,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.Reserva", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
                         .WithMany("Reservas")
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -253,7 +245,7 @@ namespace Cancha.Api.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
                 {
                     b.Navigation("Reservas");
                 });

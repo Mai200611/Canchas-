@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using CanchaEntidad = Cancha.Shared.Entities.Cancha;
 
 namespace Cancha.Api.Data
 {
