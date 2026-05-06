@@ -17,12 +17,12 @@ namespace Cancha.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.6")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,9 @@ namespace Cancha.Api.Migrations
                         .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("Tipo")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
@@ -212,7 +214,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.HorarioDisponible", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
                         .WithMany()
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -234,7 +236,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.Reserva", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
                         .WithMany("Reservas")
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -251,7 +253,7 @@ namespace Cancha.Api.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
                 {
                     b.Navigation("Reservas");
                 });
