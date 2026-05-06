@@ -1,0 +1,39 @@
+﻿@page "/horarios/create"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+
+@inject IRepository repository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3>Registrar Nuevo Horario</h3>
+    <HorariosForm @ref="horariosForm" Horario="horario" OnSubmit="Create" ReturnAction="Return" />
+</div>
+
+@code {
+    private HorarioDisponible horario = new HorarioDisponible { Activo = true };
+    private HorariosForm? horariosForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync<HorarioDisponible, HorarioDisponible>("/api/horariosdisponibles", horario); 
+        
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        
+        horariosForm!.FormPostedSuccessfully = true;
+        await sweetAlertService.FireAsync("Éxito", "Horario registrado correctamente", SweetAlertIcon.Success);
+        NavigationManager.NavigateTo("/horarios"); 
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/horarios");
+    }
+}

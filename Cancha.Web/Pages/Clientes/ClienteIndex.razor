@@ -44,11 +44,11 @@
                 @foreach (var cliente in clientes)
                 {
                     <tr>
-                        <td class="align-middle">@cliente.Documento</td>
+                        <td class="align-middle">@cliente.Cedula</td>
                         <td class="align-middle">@cliente.Nombre</td>
                         <td class="align-middle">@cliente.Telefono</td>
                         <td>
-                            <a href="/clientes/edit/@cliente.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/clientes/edit/@cliente.Cedula" class="btn btn-warning btn-sm">Editar</a>
                             <button class="btn btn-danger btn-sm" @onclick="() => BorrarCliente(cliente)">Borrar</button>
                         </td>
                     </tr>
@@ -95,7 +95,7 @@
 
         if (string.IsNullOrEmpty(result.Value)) return;
 
-        var responseHttp = await repository.DeleteAsync<object, object>($"/api/clientes/{cliente.Id}");
+        var responseHttp = await repository.DeleteAsync<object, object>($"/api/clientes/{cliente.Cedula}");
 
         if (responseHttp.Error)
         {

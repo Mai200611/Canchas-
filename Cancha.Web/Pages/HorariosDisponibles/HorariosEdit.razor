@@ -1,4 +1,4 @@
-﻿@page "/clientes/edit/{Id:int}"
+﻿@page "/horarios/edit/{Id:int}"
 @using global::Cancha.Shared.Entities
 @using Cancha.Web.Repositories
 @using CurrieTechnologies.Razor.SweetAlert2
@@ -8,9 +8,9 @@
 @inject SweetAlertService sweetAlertService
 
 <div class="container mt-4 shadow-sm p-4 bg-white rounded">
-    <h3>Editar Cliente</h3>
+    <h3>Editar Horario</h3>
 
-    @if (cliente is null)
+    @if (horario is null)
     {
         <div class="d-flex justify-content-center mt-5">
             <div class="spinner-border text-primary" role="status">
@@ -20,28 +20,26 @@
     }
     else
     {
-        
-        <ClienteForm @ref="clienteForm" Cliente="cliente" OnSubmit="Edit" ReturnAction="Return" />
+        <HorariosForm @ref="horarioForm" Horario="horario" OnSubmit="Edit" ReturnAction="Return" />
     }
 </div>
 
 @code {
-    private Cliente? cliente;
-    private ClienteForm? clienteForm;
+    private HorarioDisponible? horario;
+    private HorariosForm? horarioForm;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-     
-        var responseHTTP = await repository.GetAsync<Cliente>($"/api/clientes/{Id}");
+        var responseHTTP = await repository.GetAsync<HorarioDisponible>($"/api/horariosdisponibles/{Id}");
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                NavigationManager.NavigateTo("/clientes");
+                NavigationManager.NavigateTo("/horarios");
             }
             else
             {
@@ -51,14 +49,13 @@
         }
         else
         {
-            cliente = responseHTTP.Response;
+            horario = responseHTTP.Response;
         }
     }
 
     private async Task Edit()
     {
-       
-        var responseHTTP = await repository.PutAsync<Cliente, Cliente>("/api/clientes", cliente!);
+        var responseHTTP = await repository.PutAsync<HorarioDisponible, HorarioDisponible>("/api/horariosdisponibles", horario!);
 
         if (responseHTTP.Error)
         {
@@ -67,14 +64,14 @@
         }
         else
         {
-            clienteForm!.FormPostedSuccessfully = true;
-            await sweetAlertService.FireAsync("¡Actualizado!", "El cliente se actualizó correctamente.", SweetAlertIcon.Success);
-            NavigationManager.NavigateTo("/clientes");
+            horarioForm!.FormPostedSuccessfully = true;
+            await sweetAlertService.FireAsync("¡Actualizado!", "El horario se actualizó correctamente.", SweetAlertIcon.Success);
+            NavigationManager.NavigateTo("/horarios");
         }
     }
 
     private void Return()
     {
-        NavigationManager.NavigateTo("/clientes");
+        NavigationManager.NavigateTo("/horarios");
     }
 }
