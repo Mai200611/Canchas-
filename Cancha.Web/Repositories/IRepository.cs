@@ -3,8 +3,6 @@
     public interface IRepository
     {
         Task<HttpResponseWrapper<T>> GetAsync<T>(string url);
-
-        //Temp
         Task<HttpResponseWrapper<TResponse>> PostAsync<T, TResponse>(string url, T model);
         Task<HttpResponseWrapper<object>> PostAsync<T>(string url, T model);
         Task<HttpResponseWrapper<object>> DeleteAsync(string url);
