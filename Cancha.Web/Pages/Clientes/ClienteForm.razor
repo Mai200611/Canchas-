@@ -1,0 +1,58 @@
+﻿@using global::Cancha.Shared.Entities
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3 class="mb-4">Información del Cliente</h3>
+
+    <EditForm Model="Cliente" OnValidSubmit="OnSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Nombre Completo</label>
+                <InputText class="form-control" @bind-Value="Cliente.Nombre" placeholder="Ej: Juan Pérez" />
+                <ValidationMessage For="@(() => Cliente.Nombre)" class="text-danger small" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Documento / Cédula</label>
+                <InputNumber class="form-control" @bind-Value="Cliente.Cedula" />
+                <ValidationMessage For="@(() => Cliente.Cedula)" class="text-danger small" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Teléfono</label>
+                <InputText class="form-control" @bind-Value="Cliente.Telefono" />
+                <ValidationMessage For="@(() => Cliente.Telefono)" class="text-danger small" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Correo Electrónico</label>
+                <InputText type="email" class="form-control" @bind-Value="Cliente.Correo" />
+                <ValidationMessage For="@(() => Cliente.Correo)" class="text-danger small" />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 border-top pt-3">
+            <button type="button" class="btn btn-secondary" @onclick="ReturnAction">Cancelar</button>
+            <button type="submit" class="btn btn-success">Guardar Cliente</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Cliente Cliente { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+}

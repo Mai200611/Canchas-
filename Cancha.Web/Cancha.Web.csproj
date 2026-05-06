@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Cancha.Shared\Cancha.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\HorariosDisponibles\" />
+    <Folder Include="Pages\Pagos\" />
+    <Folder Include="Pages\Reservas\" />
+  </ItemGroup>
+
 </Project>

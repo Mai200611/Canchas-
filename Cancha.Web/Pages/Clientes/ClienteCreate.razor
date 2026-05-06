@@ -1,0 +1,39 @@
+﻿@page "/clientes/create"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+
+@inject IRepository repository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3>Registrar Nuevo Cliente</h3>
+    <ClienteForm @ref="clienteForm" Cliente="cliente" OnSubmit="Create" ReturnAction="Return" />
+</div>
+
+@code {
+    private Cliente cliente = new();
+    private ClienteForm? clienteForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync<Cliente, Cliente>("/api/clientes", cliente);
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        clienteForm!.FormPostedSuccessfully = true;
+        await sweetAlertService.FireAsync("Éxito", "Cliente registrado correctamente", SweetAlertIcon.Success);
+        NavigationManager.NavigateTo("/clientes");
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/clientes");
+    }
+}
