@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Cancha.Shared.Entities;
+using CanchaEntidad = Cancha.Shared.Entities.Cancha; //Por conflicto con nombramiento
 
 namespace Cancha.Api.Data
 {
@@ -25,17 +26,12 @@ namespace Cancha.Api.Data
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(c => c.Cedula).IsUnique();
-                entity.HasIndex(e => e.Correo).IsUnique();
             });
 
             modelBuilder.Entity<CanchaEntidad>(entity =>
             {
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.Id).ValueGeneratedOnAdd();
-                entity.ToTable(tb => tb.HasCheckConstraint(
-                    "CK_Cancha_Tipo",
-                    "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')"
-                ));
                 entity.Property(c => c.Activa).HasDefaultValue(true); //Valor por defecto en la base de datos
             });
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cancha.Api.Data;
 using Cancha.Shared.Entities;
+using CanchaEntidad = Cancha.Shared.Entities.Cancha;
 
 namespace Cancha.Api.Controllers
 {

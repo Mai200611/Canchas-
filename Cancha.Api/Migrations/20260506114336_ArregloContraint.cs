@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cancha.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class entidadesCompleta : Migration
+    public partial class ArregloContraint : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,6 @@ namespace Cancha.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Canchas", x => x.Id);
-                    table.CheckConstraint("CK_Cancha_Tipo", "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')");
                 });
 
             migrationBuilder.CreateTable(

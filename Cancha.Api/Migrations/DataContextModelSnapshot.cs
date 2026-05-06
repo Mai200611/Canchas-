@@ -17,7 +17,7 @@ namespace Cancha.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.6")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -48,10 +48,7 @@ namespace Cancha.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Canchas", t =>
-                        {
-                            t.HasCheckConstraint("CK_Cancha_Tipo", "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')");
-                        });
+                    b.ToTable("Canchas");
                 });
 
             modelBuilder.Entity("Cancha.Shared.Entities.Cliente", b =>
@@ -85,9 +82,6 @@ namespace Cancha.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Cedula")
-                        .IsUnique();
-
-                    b.HasIndex("Correo")
                         .IsUnique();
 
                     b.ToTable("Clientes");

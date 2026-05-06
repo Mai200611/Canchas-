@@ -8,16 +8,26 @@ namespace Cancha.Shared.Entities
 {
     public enum TipoCancha
     {
+        [Display(Name = "Fútbol")]
         Futbol = 1,
-        [Display(Name = "Futbol Sala")] //Agrega espacio en ui
+
+        [Display(Name = "Fútbol Sala")]
         FutbolSala = 2,
+
+        [Display(Name = "Tenis")]
         Tennis = 3,
+
+        [Display(Name = "Baloncesto")]
         Baloncesto = 4,
+
+        [Display(Name = "Voleibol")]
         Voleibol = 5,
+
+        [Display(Name = "Pádel")]
         Pádel = 6
     }
 
-    public class CanchaEntidad
+    public class Cancha
     {
         [Display(Name = "Id de la Cancha")]
         public int Id { get; set; }
