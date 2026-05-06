@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Cancha.Shared.Entities;
-
 namespace Cancha.Api.Data
 {
-    public class DataContext : DbContext
+    public class DataContext: DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
 
@@ -12,10 +11,8 @@ namespace Cancha.Api.Data
         }
 
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<CanchaEntidad> Canchas { get; set; }
-        public DbSet<HorarioDisponible> HorariosDisponibles { get; set; }
-        public DbSet<Reserva> Reservas { get; set; }
-        public DbSet<Pago> Pagos { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
@@ -37,6 +34,9 @@ namespace Cancha.Api.Data
                     "Tipo IN ('Futbol', 'Futbol Sala', 'Tennis', 'Baloncesto', 'Voleibol', 'Padel')"
                 ));
                 entity.Property(c => c.Activa).HasDefaultValue(true); //Valor por defecto en la base de datos
+                entity.Property(c => c.Tipo)
+                    .HasConversion<int>()
+                    .HasDefaultValue(TipoCancha.Futbol);
             });
 
             modelBuilder.Entity<HorarioDisponible>(entity =>
@@ -86,6 +86,9 @@ namespace Cancha.Api.Data
             });
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Cliente>().HasIndex(c => c.Cedula).IsUnique();
+
         }
     }
 }
