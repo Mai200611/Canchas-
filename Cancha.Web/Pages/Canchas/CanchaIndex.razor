@@ -1,0 +1,78 @@
+﻿@page "/canchas"
+@using Entities = Cancha.Shared.Entities
+@using Cancha.Web.Repositories
+@using Cancha.Web.Shared
+
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService swal
+
+<h1>Canchas Index</h1>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/canchas/Create">Nueva Cancha</a>
+</div>
+
+<GenericList MyList="Canchas">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Precio por Hora</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Canchas == null)
+                {
+                    <div class="alert alert-info">Cargando canchas...</div>
+                }
+                else if (!Canchas.Any())
+                {
+                    <div class="alert alert-warning">No hay canchas registradas.</div>
+                }
+                else
+                {
+                    @foreach (var cancha in Canchas!)
+                    {
+                        <tr>
+                            <td>@cancha.Id</td>
+                            <td>@cancha.Nombre</td>
+                            <td>@cancha.Tipo</td>
+                            <td>@cancha.PrecioHora.ToString("C")</td>
+                            <td>
+                                @if (cancha.Activa)
+                                {
+                                    <span class="badge bg-success">Activa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactiva</span>
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="/canchas/Edit/@cancha.Id">Editar</a>
+                                <button class="btn btn-danger btn-sm">Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+
+@code {
+    public List<Entities.Cancha>? Canchas { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHppt = await repository.GetAsync<List<Entities.Cancha>>("/api/cancha");
+        Canchas = responseHppt.Response!;
+    }
+
+}
