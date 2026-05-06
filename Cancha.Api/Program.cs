@@ -29,6 +29,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 var app = builder.Build();
 
+
 // Ejecucion del SeedDb
 var scopeFactory = app.Services.GetService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
