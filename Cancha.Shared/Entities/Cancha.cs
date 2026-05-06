@@ -47,7 +47,7 @@ namespace Cancha.Shared.Entities
 
         [Display(Name = "Precio por Hora")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que {1}.")]
+        [Range(0.01, 999999.99, ErrorMessage = "El campo {0} debe ser mayor que {1} y menor que {2}.")]
         [Column(TypeName = "decimal(8,2)")]
         [DataType(DataType.Currency)] //ui
         public decimal PrecioHora { get; set; }

@@ -1,0 +1,35 @@
+﻿@page "/canchas/create"
+@using Cancha.Web.Repositories
+@using Cancha.Web.Shared
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Nueva Cancha</h3>
+
+<CanchaForm Cancha="cancha" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Cancha cancha = new();
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/cancha", cancha);
+        
+        if (responseHttp.Error)
+        {
+            // Solo muestra error si es algo diferente a validación de datos
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        await sweetAlertService.FireAsync("Éxito", "Cancha creada correctamente", "success");
+        navigationManager.NavigateTo("/canchas");
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/canchas");
+    }
+}

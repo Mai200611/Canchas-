@@ -1,14 +1,15 @@
-﻿@using Cancha.Shared.Entities
+﻿@using Cancha.Web.Extensions
 @using Microsoft.AspNetCore.Components.Forms
 
-<EditForm Model="Cancha" OnSubmit="OnSubmit">
+<EditForm Model="Cancha" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
     
     <div class="mb-3">
         <label>Nombre de la Cancha:</label>
         <div>
             <InputText class="form-control" @bind-Value="Cancha.Nombre" />
-            <ValidationMessage For="@(() => Cancha.Nombre)" />
+            <ValidationMessage For="@(() => Cancha.Nombre)" class="text-danger" />
         </div>
     </div>
 
@@ -17,17 +18,12 @@
         <div>
             <InputSelect class="form-select" @bind-Value="Cancha.Tipo">
                 <option value="">Seleccione un tipo</option>
-                <option value="Fútbol">Fútbol</option>
-                <option value="Fútbol 5">Fútbol 5</option>
-                <option value="Fútbol 7">Fútbol 7</option>
-                <option value="Fútbol 11">Fútbol 11</option>
-                <option value="Tenis">Tenis</option>
-                <option value="Pádel">Pádel</option>
-                <option value="Básquet">Básquet</option>
-                <option value="Vóley">Vóley</option>
-                <option value="Frontón">Frontón</option>
+                @foreach (var tipo in EnumExtensions.GetEnumList<TipoCancha>())
+                {
+                    <option value="@tipo.Value">@tipo.DisplayName</option>
+                }
             </InputSelect>
-            <ValidationMessage For="@(() => Cancha.Tipo)" />
+            <ValidationMessage For="@(() => Cancha.Tipo)" class="text-danger" />
         </div>
     </div>
 
@@ -35,30 +31,25 @@
         <label>Precio por Hora:</label>
         <div>
             <InputNumber class="form-control" @bind-Value="Cancha.PrecioHora" step="0.01" />
-            <ValidationMessage For="@(() => Cancha.PrecioHora)" />
+            <ValidationMessage For="@(() => Cancha.PrecioHora)" class="text-danger" />
         </div>
     </div>
 
     <div class="mb-3 form-check">
         <InputCheckbox class="form-check-input" @bind-Value="Cancha.Activa" />
         <label class="form-check-label">¿Cancha Activa?</label>
-        <ValidationMessage For="@(() => Cancha.Activa)" />
     </div>
 
-    <div class="mb-3">
-        <button class="btn btn-primary" type="submit">Guardar</button>
-        <button class="btn btn-secondary" type="button" @onclick="ReturnAction">Regresar</button>
-    </div>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary" type="button" @onclick="ReturnAction">Regresar</button>
 </EditForm>
 
 @code {
-    [EditorRequired]
     [Parameter]
     public Cancha Cancha { get; set; } = new();
 
-    [EditorRequired]
     [Parameter]
-    public EventCallback OnSubmit { get; set; }
+    public EventCallback OnValidSubmit { get; set; }
 
     [Parameter]
     public EventCallback ReturnAction { get; set; }
