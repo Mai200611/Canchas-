@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cancha.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260501175058_entidadesCompleta")]
-    partial class entidadesCompleta
+    [Migration("20260506051150_InitialFinal")]
+    partial class InitialFinal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Cancha.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,6 +88,9 @@ namespace Cancha.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Cedula")
+                        .IsUnique();
+
+                    b.HasIndex("Correo")
                         .IsUnique();
 
                     b.ToTable("Clientes");
@@ -178,10 +181,8 @@ namespace Cancha.Api.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
@@ -212,7 +213,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.HorarioDisponible", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
                         .WithMany()
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -234,7 +235,7 @@ namespace Cancha.Api.Migrations
 
             modelBuilder.Entity("Cancha.Shared.Entities.Reserva", b =>
                 {
-                    b.HasOne("Cancha.Shared.Entities.Cancha", "Cancha")
+                    b.HasOne("Cancha.Shared.Entities.CanchaEntidad", "Cancha")
                         .WithMany("Reservas")
                         .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -251,7 +252,7 @@ namespace Cancha.Api.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Cancha.Shared.Entities.Cancha", b =>
+            modelBuilder.Entity("Cancha.Shared.Entities.CanchaEntidad", b =>
                 {
                     b.Navigation("Reservas");
                 });

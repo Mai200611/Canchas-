@@ -44,7 +44,10 @@ El API REST expone las siguientes operaciones CRUD probadas en Swagger:
 * `DELETE /api/reservas/{id}` - Cancelar/Eliminar registro.
 
 ## 🎥 7. Video Demostrativo
-De acuerdo con el punto 8 de la práctica, aquí se encuentra la evidencia del funcionamiento:
-* [Link al video de YouTube/Drive aquí][cite: 1]
+De acuerdo con el punto 8 de la práctica, aquí se encuentra la evidencia del funcionamiento medio YouTube:
+* Yeferxon Alejandro Marquez Video enlace: https://youtu.be/5Bs6gvFnnCQ?si=O86oBcUh0B6ZsxSM
+*
+*
+*
 
-> **Nota:** El video incluye la explicación de la arquitectura, evidencia de migraciones y la demostración del CRUD funcional desde Blazor junto al SeedDb.
+> **Nota:** Los videos incluyen la explicación de la arquitectura, evidencia de migraciones y la demostración del CRUD funcional desde Blazor junto al SeedDb.

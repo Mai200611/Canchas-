@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cancha.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class entidadesCompleta : Migration
+    public partial class InitialClean : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace Cancha.Api.Migrations
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HoraInicio = table.Column<TimeSpan>(type: "time", nullable: false),
                     HoraFin = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Estado = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
                     PrecioTotal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CanchaId = table.Column<int>(type: "int", nullable: false),
                     ClienteId = table.Column<int>(type: "int", nullable: false)
@@ -128,6 +128,12 @@ namespace Cancha.Api.Migrations
                 name: "IX_Clientes_Cedula",
                 table: "Clientes",
                 column: "Cedula",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_Correo",
+                table: "Clientes",
+                column: "Correo",
                 unique: true);
 
             migrationBuilder.CreateIndex(

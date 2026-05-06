@@ -13,7 +13,7 @@ namespace Cancha.Api.Data
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        // Inyectamos el manejo de usuarios y roles, requisito indispensable del PDF
+        // Inyectamos el manejo de usuarios y roles
         public SeedDb(DataContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -25,11 +25,11 @@ namespace Cancha.Api.Data
         {
             await _context.Database.EnsureCreatedAsync();
 
-            // 1. Verificar Roles y Usuario Admin (Requisito Punto 3 del PDF)
+            // 1. Verificar Roles y Usuario Admin
             await CheckRolesAsync();
             await CheckUserAsync("Admin", "Canchas", "admin@yopmail.com", "123456", "Admin");
 
-            // 2. Cargar entidades de negocio (Mínimo 2 entidades según PDF)
+            // 2. Cargar entidades de negocio
             await CheckCanchasAsync();
             await CheckClientesAsync();
 
