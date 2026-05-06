@@ -1,0 +1,77 @@
+﻿@page "/horarios/edit/{Id:int}"
+@using global::Cancha.Shared.Entities
+@using Cancha.Web.Repositories
+@using CurrieTechnologies.Razor.SweetAlert2
+
+@inject NavigationManager NavigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3>Editar Horario</h3>
+
+    @if (horario is null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <HorariosForm @ref="horarioForm" Horario="horario" OnSubmit="Edit" ReturnAction="Return" />
+    }
+</div>
+
+@code {
+    private HorarioDisponible? horario;
+    private HorariosForm? horarioForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var responseHTTP = await repository.GetAsync<HorarioDisponible>($"/api/horariosdisponibles/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                NavigationManager.NavigateTo("/horarios");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            horario = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        var responseHTTP = await repository.PutAsync<HorarioDisponible, HorarioDisponible>("/api/horariosdisponibles", horario!);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            horarioForm!.FormPostedSuccessfully = true;
+            await sweetAlertService.FireAsync("¡Actualizado!", "El horario se actualizó correctamente.", SweetAlertIcon.Success);
+            NavigationManager.NavigateTo("/horarios");
+        }
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/horarios");
+    }
+}

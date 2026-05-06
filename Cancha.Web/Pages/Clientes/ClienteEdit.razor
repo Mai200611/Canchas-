@@ -1,0 +1,80 @@
+﻿@page "/clientes/edit/{Id:int}"
+@using global::Cancha.Shared.Entities
+@using Cancha.Web.Repositories
+@using CurrieTechnologies.Razor.SweetAlert2
+
+@inject NavigationManager NavigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3>Editar Cliente</h3>
+
+    @if (cliente is null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        
+        <ClienteForm @ref="clienteForm" Cliente="cliente" OnSubmit="Edit" ReturnAction="Return" />
+    }
+</div>
+
+@code {
+    private Cliente? cliente;
+    private ClienteForm? clienteForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+     
+        var responseHTTP = await repository.GetAsync<Cliente>($"/api/clientes/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                NavigationManager.NavigateTo("/clientes");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            cliente = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+       
+        var responseHTTP = await repository.PutAsync<Cliente, Cliente>("/api/clientes", cliente!);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            clienteForm!.FormPostedSuccessfully = true;
+            await sweetAlertService.FireAsync("¡Actualizado!", "El cliente se actualizó correctamente.", SweetAlertIcon.Success);
+            NavigationManager.NavigateTo("/clientes");
+        }
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/clientes");
+    }
+}

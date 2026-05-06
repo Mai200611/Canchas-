@@ -1,0 +1,32 @@
+﻿@page "/canchas/create"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+@inject IRepository CanchaRepository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+
+@code {
+    private CanchaEntidad cancha = new CanchaEntidad { Activa = true };
+
+    private async Task Create()
+    {
+        var responseHttp = await CanchaRepository.PostAsync<CanchaEntidad, CanchaEntidad>("/api/canchas", cancha);
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        await sweetAlertService.FireAsync("Éxito", "Cancha creada correctamente", SweetAlertIcon.Success);
+        NavigationManager.NavigateTo("/canchas");
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/canchas");
+    }
+}

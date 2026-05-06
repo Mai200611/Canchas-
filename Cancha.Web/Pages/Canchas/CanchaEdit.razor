@@ -1,0 +1,80 @@
+﻿@page "/canchas/edit/{Id:int}"
+@using global::Cancha.Shared.Entities
+@using Cancha.Web.Repositories
+@using CurrieTechnologies.Razor.SweetAlert2
+
+@inject NavigationManager NavigationManager
+@inject IRepository CanchaRepository
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3>Editar Cancha</h3>
+
+    @if (cancha is null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <CanchaForm @ref="canchaForm" Cancha="cancha" OnSubmit="Edit" ReturnAction="Return" />
+    }
+</div>
+
+@code {
+   
+    private CanchaEntidad? cancha;
+    private CanchaForm? canchaForm;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Traemos la información de la cancha específica a editar
+        var responseHTTP = await CanchaRepository.GetAsync<CanchaEntidad>($"/api/canchas/{Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                NavigationManager.NavigateTo("/canchas");
+            }
+            else
+            {
+                var messageError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            cancha = responseHTTP.Response;
+        }
+    }
+
+    private async Task Edit()
+    {
+        // Usamos PutAsync para actualizar. Le pasamos <CanchaEntidad, CanchaEntidad> para evitar el error CS0411
+        var responseHTTP = await CanchaRepository.PutAsync<CanchaEntidad, CanchaEntidad>("/api/canchas", cancha!);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            canchaForm!.FormPostedSuccessfully = true;
+            await sweetAlertService.FireAsync("¡Actualizado!", "La cancha se actualizó correctamente.", SweetAlertIcon.Success);
+            NavigationManager.NavigateTo("/canchas");
+        }
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/canchas");
+    }
+}

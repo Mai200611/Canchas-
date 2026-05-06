@@ -1,0 +1,79 @@
+﻿@using global::Cancha.Shared.Entities
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <h3 class="mb-4">Información del Horario</h3>
+
+    <EditForm Model="Horario" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Día de la Semana</label>
+                <select class="form-select" @onchange="OnDiaChanged">
+                    @foreach (var dia in Enum.GetValues(typeof(DiaSemana)))
+                    {
+                        <option value="@((int)dia)" selected="@((int)dia == Horario.DiaSemana)">@dia.ToString()</option>
+                    }
+                </select>
+                <ValidationMessage For="@(() => Horario.DiaSemana)" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">ID de la Cancha</label>
+                <input type="number" class="form-control" @bind-value="Horario.CanchaId" />
+                <ValidationMessage For="@(() => Horario.CanchaId)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Hora de Inicio</label>
+                <input type="time" class="form-control" value="@Horario.HoraInicio.ToString(@"hh\:mm")" @onchange="OnHoraInicioChanged" />
+                <ValidationMessage For="@(() => Horario.HoraInicio)" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Hora de Fin</label>
+                <input type="time" class="form-control" value="@Horario.HoraFin.ToString(@"hh\:mm")" @onchange="OnHoraFinChanged" />
+                <ValidationMessage For="@(() => Horario.HoraFin)" />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 border-top pt-3">
+            <button type="button" class="btn btn-secondary" @onclick="ReturnAction">Cancelar</button>
+            <button type="submit" class="btn btn-success">Guardar Horario</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public HorarioDisponible Horario { get; set; } = null!;
+    [Parameter] public EventCallback OnSubmit { get; set; }
+    [Parameter] public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private void OnDiaChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var result))
+            Horario.DiaSemana = result;
+    }
+
+    private void OnHoraInicioChanged(ChangeEventArgs e)
+    {
+        if (TimeSpan.TryParse(e.Value?.ToString(), out var result))
+            Horario.HoraInicio = result;
+    }
+
+    private void OnHoraFinChanged(ChangeEventArgs e)
+    {
+        if (TimeSpan.TryParse(e.Value?.ToString(), out var result))
+            Horario.HoraFin = result;
+    }
+
+    private async Task HandleSubmit()
+    {
+        await OnSubmit.InvokeAsync();
+    }
+}

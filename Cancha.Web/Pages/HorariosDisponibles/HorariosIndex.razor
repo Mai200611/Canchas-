@@ -1,0 +1,123 @@
+﻿@page "/horarios"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+
+@inject IRepository repository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Listado de Horarios Disponibles</h3>
+        <a href="/horarios/create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Horario
+        </a>
+    </div>
+
+    @if (horarios is null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else if (horarios.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">
+            No hay horarios registrados en el sistema.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Cancha ID</th>
+                    <th>Día</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var horario in horarios)
+                {
+                    <tr>
+                        <td class="align-middle">@horario.CanchaId</td>
+                        <td class="align-middle">@((DiaSemana)horario.DiaSemana)</td>
+                        <td class="align-middle">@horario.HoraInicio.ToString(@"hh\:mm")</td>
+                        <td class="align-middle">@horario.HoraFin.ToString(@"hh\:mm")</td>
+                        <td class="align-middle">
+                            @if (horario.Activo)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/horarios/edit/@horario.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <button class="btn btn-danger btn-sm" @onclick="() => BorrarHorario(horario)">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private List<HorarioDisponible>? horarios;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarHorarios();
+    }
+
+    private async Task CargarHorarios()
+    {
+        var responseHttp = await repository.GetAsync<List<HorarioDisponible>>("/api/horariosdisponibles");
+
+        if (!responseHttp.Error)
+        {
+            horarios = responseHttp.Response;
+        }
+        else
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task BorrarHorario(HorarioDisponible horario)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+        {
+            Title = "¿Estás seguro?",
+            Text = $"Se eliminará el horario del {((DiaSemana)horario.DiaSemana)}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sí, eliminar",
+            CancelButtonText = "Cancelar"
+        });
+
+        if (string.IsNullOrEmpty(result.Value)) return;
+
+        var responseHttp = await repository.DeleteAsync<object, object>($"/api/horariosdisponibles/{horario.Id}");
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await sweetAlertService.FireAsync("¡Eliminado!", "El horario ha sido borrado.", SweetAlertIcon.Success);
+        await CargarHorarios();
+    }
+}

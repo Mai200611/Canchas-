@@ -1,0 +1,110 @@
+﻿@page "/clientes"
+@using global::Cancha.Shared.Entities
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Cancha.Web.Repositories
+
+@inject IRepository repository
+@inject NavigationManager NavigationManager
+@inject SweetAlertService sweetAlertService
+
+<div class="container mt-4 shadow-sm p-4 bg-white rounded">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Listado de Clientes</h3>
+        <a href="/clientes/create" class="btn btn-primary">
+            <i class="bi bi-person-plus"></i> Nuevo Cliente
+        </a>
+    </div>
+
+    @if (clientes is null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else if (clientes.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">
+            No hay clientes registrados en el sistema.
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in clientes)
+                {
+                    <tr>
+                        <td class="align-middle">@cliente.Cedula</td>
+                        <td class="align-middle">@cliente.Nombre</td>
+                        <td class="align-middle">@cliente.Telefono</td>
+                        <td>
+                            <a href="/clientes/edit/@cliente.Cedula" class="btn btn-warning btn-sm">Editar</a>
+                            <button class="btn btn-danger btn-sm" @onclick="() => BorrarCliente(cliente)">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private List<Cliente>? clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarClientes();
+    }
+
+    private async Task CargarClientes()
+    {
+        var responseHttp = await repository.GetAsync<List<Cliente>>("/api/clientes");
+
+        if (!responseHttp.Error)
+        {
+            clientes = responseHttp.Response;
+        }
+        else
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task BorrarCliente(Cliente cliente)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+        {
+            Title = "¿Estás seguro?",
+            Text = $"Se eliminará al cliente: {cliente.Nombre}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sí, eliminar",
+            CancelButtonText = "Cancelar"
+        });
+
+        if (string.IsNullOrEmpty(result.Value)) return;
+
+        var responseHttp = await repository.DeleteAsync<object, object>($"/api/clientes/{cliente.Cedula}");
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await sweetAlertService.FireAsync("¡Eliminado!", "El cliente ha sido borrado.", SweetAlertIcon.Success);
+        await CargarClientes();
+    }
+}
